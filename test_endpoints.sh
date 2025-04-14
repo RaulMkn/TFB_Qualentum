@@ -5,7 +5,7 @@ BASE_URL="http://127.0.0.1:5000/data"
 
 # Test POST /data (Insert Data)
 echo "Testing POST /data (Insert Data)..."
-curl -X POST -H "Content-Type: application/json" -d '{"name": "Test Data"}' $BASE_URL
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Test Data2"}' $BASE_URL
 echo -e "\n"
 
 # Test GET /data (Get All Data)
