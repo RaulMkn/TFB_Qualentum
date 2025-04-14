@@ -178,10 +178,9 @@ FLASK_ENV=development python run.py
 
 ## 👨‍💻 Autor
 
-Proyecto realizado por **Tu Nombre** como entrega final del Bootcamp DevOps de Qualentum.
+Proyecto realizado por **Raul Makendengue** como entrega final del Bootcamp DevOps de Qualentum.
 
-- GitHub: [https://github.com/tuusuario](https://github.com/tuusuario)
-- LinkedIn: [https://linkedin.com/in/tuusuario](https://linkedin.com/in/tuusuario)
+- GitHub: [https://github.com/RaulMkn](https://github.com/RaulMkn)
 
 ---
 
