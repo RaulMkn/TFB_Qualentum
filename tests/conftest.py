@@ -1,10 +1,12 @@
 import pytest
 from app import create_app, db
 
+
 class TestingConfig:
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 @pytest.fixture
 def client():

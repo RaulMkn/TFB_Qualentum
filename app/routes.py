@@ -10,11 +10,11 @@ def insert_data():
     try:
         data = request.json
         if not data or "name" not in data:
-            return {"message": "Invalid input. 'name' is required."}, 400
+            return {"message": "'name' is required"}, 400
 
         name = data.get("name").strip()
         if not name:
-            return {"message": "Invalid input. 'name' cannot be empty."}, 400
+            return {"message": "'name' cannot be empty."}, 400
 
         current_data = Data.query.filter_by(name=name).first()
         if current_data:
@@ -23,7 +23,8 @@ def insert_data():
         new_data = Data(name=name)
         db.session.add(new_data)
         db.session.commit()
-        return jsonify({"message": "Data inserted successfully", "id": new_data.id}), 201
+        return jsonify({"message": "Data inserted successfully",
+                        "id": new_data.id}), 201
     except Exception as e:
         db.session.rollback()
         return {"message": f"An error occurred: {str(e)}"}, 500
@@ -32,7 +33,8 @@ def insert_data():
 @data_routes.route("/data", methods=["GET"])
 def get_all_data():
     try:
-        data_list = [{"id": data.id, "name": data.name} for data in Data.query.all()]
+        data_list = [{"id": data.id,
+                      "name": data.name} for data in Data.query.all()]
         return jsonify(data_list), 200
     except Exception as e:
         return {"message": f"An error occurred: {str(e)}"}, 500
@@ -52,4 +54,3 @@ def delete_data(id):
     except Exception as e:
         db.session.rollback()
         return {"message": f"An error occurred: {str(e)}"}, 500
-    
