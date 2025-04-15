@@ -1,5 +1,5 @@
 # Imagen base
-FROM python:alphine
+FROM python:latest
 
 # Establecer directorio de trabajo
 WORKDIR /app
