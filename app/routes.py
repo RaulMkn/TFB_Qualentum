@@ -52,3 +52,4 @@ def delete_data(id):
     except Exception as e:
         db.session.rollback()
         return {"message": f"An error occurred: {str(e)}"}, 500
+    
