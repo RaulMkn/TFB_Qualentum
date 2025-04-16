@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.11'
-            args '-u root' 
+            args '-u root'
         }
     }
 
@@ -20,32 +20,30 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'pip install --upgrade pip'
-                sh 'pip install -r requirements.txt'
+                sh 'python -m venv venv'
+                sh '. venv/bin/activate && pip install --upgrade pip'
+                sh '. venv/bin/activate && pip install -r requirements.txt'
             }
         }
 
         stage('Lint') {
             steps {
                 sh 'pip install flake8'
-                sh 'flake8 app'
+                sh 'flake8 app || exit 1'
             }
         }
 
         stage('Run tests') {
             steps {
-                sh 'pip install pytest pytest-cov'
-                sh 'pytest --cov=app tests/'
+                sh '. venv/bin/activate && pip install pytest pytest-cov'
+                sh '. venv/bin/activate && pytest --cov=app --maxfail=3 tests/'
             }
         }
 
         stage('Build Docker image') {
             steps {
-                // Ejecutar fuera del contenedor Python
                 script {
-                    docker.image('docker:latest').inside('--privileged -v /var/run/docker.sock:/var/run/docker.sock') {
-                        sh 'docker build -t myapp .'
-                    }
+                    docker.build('myapp')
                 }
             }
         }
@@ -56,14 +54,8 @@ pipeline {
             }
             steps {
                 script {
-                    docker.image('docker:latest').inside('--privileged -v /var/run/docker.sock:/var/run/docker.sock') {
-                        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                            sh '''
-                                echo "$PASS" | docker login -u "$USER" --password-stdin
-                                docker tag myapp $USER/myapp
-                                docker push $USER/myapp
-                            '''
-                        }
+                    docker.withRegistry('', 'dockerhub-creds') {
+                        docker.image('myapp').push()
                     }
                 }
             }
