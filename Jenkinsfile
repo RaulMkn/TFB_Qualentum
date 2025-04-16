@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'docker:19.03.12'  // Usar una imagen de Docker con Docker preinstalado
+            image 'my-custom-python-docker'  // Usar tu imagen personalizada
             args '-u root -v /var/run/docker.sock:/var/run/docker.sock'  // Montar el socket de Docker
         }
     }
@@ -20,7 +20,7 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'python -m venv venv'
+                // Aquí ya no necesitas instalar Docker, ya está en la imagen personalizada
                 sh '. venv/bin/activate && pip install --upgrade pip'
                 sh '. venv/bin/activate && pip install -r requirements.txt'
             }
