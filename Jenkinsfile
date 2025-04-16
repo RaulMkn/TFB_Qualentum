@@ -1,10 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11'
-            args '-u root' // Por si necesitas instalar algo con apt
-        }
-    }
+
+    agent any
 
     environment {
         FLASK_ENV = "testing"
