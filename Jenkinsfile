@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.11'
-            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'  // Montar el socket Docker del host
+            image 'docker:19.03.12'  // Usar una imagen de Docker con Docker preinstalado
+            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'  // Montar el socket de Docker
         }
     }
 
@@ -29,7 +29,7 @@ pipeline {
         stage('Lint') {
             steps {
                 sh '. venv/bin/activate && pip install flake8'
-                sh '. venv/bin/activate && flake8 app || exit 1'  // Corrección: Llamada de flake8 con la activación del entorno
+                sh '. venv/bin/activate && flake8 app || exit 1'
             }
         }
 
@@ -57,7 +57,7 @@ pipeline {
                 script {
                     // Subir la imagen a Docker Hub con las credenciales almacenadas en Jenkins
                     docker.withRegistry('', 'dockerhub-creds') {
-                        docker.image('myapp').push()  // Push de la imagen
+                        docker.image('myapp').push()
                     }
                 }
             }
