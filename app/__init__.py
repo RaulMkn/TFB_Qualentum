@@ -19,3 +19,6 @@ def create_app(config_name):
     app.register_blueprint(data_routes)
 
     return app
+
+
+__all__ = ["create_app", "db"]
