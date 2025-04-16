@@ -17,3 +17,5 @@ ENV FLASK_ENV=production
 # Puerto que expondrá el contenedor
 EXPOSE 5000
 
+# Comando por defecto
+CMD ["python", "run.py"]

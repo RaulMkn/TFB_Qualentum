@@ -3,44 +3,37 @@ pipeline {
 
     environment {
         FLASK_ENV = "testing"
-        VENV = ".venv"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/RaulMkn/TFB_Qualentum'
+					git branch: 'main', 
+					url: 'https://github.com/RaulMkn/TFB_Qualentum'
             }
         }
 
         stage('Install dependencies') {
             steps {
-                sh 'python3 -m venv $VENV'
-                sh '. $VENV/bin/activate && pip install --upgrade pip'
-                sh '. $VENV/bin/activate && pip install -r requirements.txt'
+                sh 'pip install -r requirements.txt'
             }
         }
 
         stage('Lint') {
             steps {
-                sh '. $VENV/bin/activate && pip install flake8'
-                sh '. $VENV/bin/activate && flake8 app || exit 1'
+                sh 'flake8 app'
             }
         }
 
         stage('Run tests') {
             steps {
-                sh '. $VENV/bin/activate && pip install pytest pytest-cov'
-                sh '. $VENV/bin/activate && pytest --cov=app --maxfail=3 tests/'
+                sh 'pytest --cov=app tests/'
             }
         }
 
         stage('Build Docker image') {
             steps {
-                script {
-                    docker.build('myapp')
-                }
+                sh 'docker build -t myapp .'
             }
         }
 
@@ -49,10 +42,12 @@ pipeline {
                 branch 'main'
             }
             steps {
-                script {
-                    docker.withRegistry('', 'dockerhub-creds') {
-                        docker.image('myapp').push()
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh '''
+                        echo "$PASS" | docker login -u "$USER" --password-stdin
+                        docker tag myapp $USER/myapp
+                        docker push $USER/myapp
+                    '''
                 }
             }
         }
