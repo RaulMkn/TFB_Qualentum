@@ -1,5 +1,4 @@
 pipeline {
-
     agent {
         docker {
             image 'raulmkn/imagen-custom-python-docker:latest'
@@ -7,12 +6,12 @@ pipeline {
         }
     }
 
-
     environment {
         FLASK_ENV = "testing"
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'main', 
@@ -45,19 +44,21 @@ pipeline {
                 sh 'docker build -t myapp .'
             }
         }
-        steps {
-    echo "Rama actual: ${env.BRANCH_NAME}"
-}
 
+        stage('Show branch') {
+            steps {
+                echo "Rama actual: ${env.BRANCH_NAME}"
+            }
+        }
 
         stage('Push Docker image') {
-                when {
-        anyOf {
-            branch 'main'
-            branch 'develop'
-            branch 'master'
-        }
-    }
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'develop'
+                    branch 'master'
+                }
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh '''
