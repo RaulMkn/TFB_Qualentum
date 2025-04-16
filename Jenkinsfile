@@ -12,7 +12,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Construir la imagen de Docker antes de usarla
+                    // Construir la imagen de Docker
                     sh 'docker build -t my-custom-python-docker .'
                 }
             }
@@ -21,8 +21,8 @@ pipeline {
         stage('Run Docker Image') {
             steps {
                 script {
-                    // Ejecutar el contenedor basado en la imagen creada
-                    sh 'docker run -it --rm my-custom-python-docker'
+                    // Ejecutar el contenedor sin TTY
+                    sh 'docker run --rm my-custom-python-docker'
                 }
             }
         }
