@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.11'
-            args '-u root'
+            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'  // Montar el socket Docker del host
         }
     }
 
@@ -28,8 +28,8 @@ pipeline {
 
         stage('Lint') {
             steps {
-                sh 'pip install flake8'
-                sh 'flake8 app || exit 1'
+                sh '. venv/bin/activate && pip install flake8'
+                sh '. venv/bin/activate && flake8 app || exit 1'  // Corrección: Llamada de flake8 con la activación del entorno
             }
         }
 
@@ -43,6 +43,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 script {
+                    // Construcción de la imagen Docker
                     docker.build('myapp')
                 }
             }
@@ -54,8 +55,9 @@ pipeline {
             }
             steps {
                 script {
+                    // Subir la imagen a Docker Hub con las credenciales almacenadas en Jenkins
                     docker.withRegistry('', 'dockerhub-creds') {
-                        docker.image('myapp').push()
+                        docker.image('myapp').push()  // Push de la imagen
                     }
                 }
             }
