@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+            args '-u root' // Por si necesitas instalar algo con apt
+        }
+    }
 
     environment {
         FLASK_ENV = "testing"
@@ -8,8 +13,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-					git branch: 'main', 
-					url: 'https://github.com/RaulMkn/TFB_Qualentum'
+                git branch: 'main', 
+                    url: 'https://github.com/RaulMkn/TFB_Qualentum'
             }
         }
 
@@ -21,12 +26,14 @@ pipeline {
 
         stage('Lint') {
             steps {
+                sh 'pip install flake8'
                 sh 'flake8 app'
             }
         }
 
         stage('Run tests') {
             steps {
+                sh 'pip install pytest pytest-cov'
                 sh 'pytest --cov=app tests/'
             }
         }
