@@ -45,6 +45,10 @@ pipeline {
                 sh 'docker build -t myapp .'
             }
         }
+        steps {
+    echo "Rama actual: ${env.BRANCH_NAME}"
+}
+
 
         stage('Push Docker image') {
                 when {
