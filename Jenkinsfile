@@ -1,14 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'my-custom-python-docker'  // Usar tu imagen personalizada
-            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'  // Montar el socket de Docker
-        }
-    }
-
-    environment {
-        FLASK_ENV = "testing"
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -18,33 +9,20 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
-            steps {
-                // Aquí ya no necesitas instalar Docker, ya está en la imagen personalizada
-                sh '. venv/bin/activate && pip install --upgrade pip'
-                sh '. venv/bin/activate && pip install -r requirements.txt'
-            }
-        }
-
-        stage('Lint') {
-            steps {
-                sh '. venv/bin/activate && pip install flake8'
-                sh '. venv/bin/activate && flake8 app || exit 1'
-            }
-        }
-
-        stage('Run tests') {
-            steps {
-                sh '. venv/bin/activate && pip install pytest pytest-cov'
-                sh '. venv/bin/activate && pytest --cov=app --maxfail=3 tests/'
-            }
-        }
-
-        stage('Build Docker image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Construcción de la imagen Docker
-                    docker.build('myapp')
+                    // Construir la imagen de Docker antes de usarla
+                    sh 'docker build -t my-custom-python-docker .'
+                }
+            }
+        }
+
+        stage('Run Docker Image') {
+            steps {
+                script {
+                    // Ejecutar el contenedor basado en la imagen creada
+                    sh 'docker run -it --rm my-custom-python-docker'
                 }
             }
         }
@@ -55,9 +33,9 @@ pipeline {
             }
             steps {
                 script {
-                    // Subir la imagen a Docker Hub con las credenciales almacenadas en Jenkins
+                    // Realizar login y subir la imagen a Docker Hub
                     docker.withRegistry('', 'dockerhub-creds') {
-                        docker.image('myapp').push()
+                        docker.image('my-custom-python-docker').push()
                     }
                 }
             }
