@@ -47,9 +47,13 @@ pipeline {
         }
 
         stage('Push Docker image') {
-            when {
-                branch 'main'
-            }
+                when {
+        anyOf {
+            branch 'main'
+            branch 'develop'
+            branch 'master'
+        }
+    }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh '''
