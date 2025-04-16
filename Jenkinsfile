@@ -1,11 +1,11 @@
 pipeline {
 
-agent {
-    docker {
-        image 'python:3.11'
-        args '-v /var/run/docker.sock:/var/run/docker.sock'
+    agent {
+        docker {
+            image 'raulmkn/imagen-custom-python-docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
     }
-}
 
 
     environment {
