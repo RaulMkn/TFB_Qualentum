@@ -1,4 +1,5 @@
 pipeline {
+
     agent {
         docker {
             image 'raulmkn/imagen-custom-python-docker:latest'
@@ -16,6 +17,18 @@ pipeline {
             steps {
                 git branch: 'main', 
                     url: 'https://github.com/RaulMkn/TFB_Qualentum'
+            }
+        }
+
+        stage('Detect Branch') {
+            steps {
+                script {
+                    env.ACTUAL_BRANCH = sh(
+                        script: 'git rev-parse --abbrev-ref HEAD',
+                        returnStdout: true
+                    ).trim()
+                    echo "Rama actual: ${env.ACTUAL_BRANCH}"
+                }
             }
         }
 
@@ -45,18 +58,10 @@ pipeline {
             }
         }
 
-        stage('Show branch') {
-            steps {
-                echo "Rama actual: ${env.BRANCH_NAME}"
-            }
-        }
-
         stage('Push Docker image') {
             when {
-                anyOf {
-                    branch 'main'
-                    branch 'develop'
-                    branch 'master'
+                expression {
+                    return env.ACTUAL_BRANCH in ['main', 'develop', 'master']
                 }
             }
             steps {
