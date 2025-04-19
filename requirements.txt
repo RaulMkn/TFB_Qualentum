@@ -7,5 +7,5 @@ flask_sqlalchemy
 pytest
 pytest-cov
 flake8
-
+python-dotenv
 

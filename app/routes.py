@@ -43,7 +43,6 @@ def get_all_data():
 @data_routes.route("/data/<int:id>", methods=["DELETE"])
 def delete_data(id):
     try:
-        # Use db.session.get() instead of Data.query.get()
         element_to_delete = db.session.get(Data, id)
         if not element_to_delete:
             return {"message": "Data not found."}, 404
