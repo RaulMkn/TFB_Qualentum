@@ -3,7 +3,6 @@ SQLAlchemy
 psycopg2-binary
 Flask-SQLAlchemy
 flask
-flask_sqlalchemy
 pytest
 pytest-cov
 flake8
