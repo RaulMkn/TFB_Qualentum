@@ -1,0 +1,128 @@
+{
+	"info": {
+	  "name": "Flask Data API",
+	  "_postman_id": "f64a9a60-3f19-4dfc-8427-abcdef123456",
+	  "description": "Colección de pruebas para los endpoints /data de la API Flask.",
+	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+	  {
+		"name": "GET all data",
+		"request": {
+		  "method": "GET",
+		  "header": [],
+		  "url": {
+			"raw": "http://localhost:5000/data",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "5000",
+			"path": ["data"]
+		  }
+		},
+		"response": []
+	  },
+	  {
+		"name": "POST insert valid data",
+		"request": {
+		  "method": "POST",
+		  "header": [
+			{
+			  "key": "Content-Type",
+			  "value": "application/json"
+			}
+		  ],
+		  "body": {
+			"mode": "raw",
+			"raw": "{\n    \"name\": \"Test Item\"\n}"
+		  },
+		  "url": {
+			"raw": "http://localhost:5000/data",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "5000",
+			"path": ["data"]
+		  }
+		},
+		"response": []
+	  },
+	  {
+		"name": "POST insert without name",
+		"request": {
+		  "method": "POST",
+		  "header": [
+			{
+			  "key": "Content-Type",
+			  "value": "application/json"
+			}
+		  ],
+		  "body": {
+			"mode": "raw",
+			"raw": "{ }"
+		  },
+		  "url": {
+			"raw": "http://localhost:5000/data",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "5000",
+			"path": ["data"]
+		  }
+		},
+		"response": []
+	  },
+	  {
+		"name": "POST insert empty name",
+		"request": {
+		  "method": "POST",
+		  "header": [
+			{
+			  "key": "Content-Type",
+			  "value": "application/json"
+			}
+		  ],
+		  "body": {
+			"mode": "raw",
+			"raw": "{\n    \"name\": \"   \"\n}"
+		  },
+		  "url": {
+			"raw": "http://localhost:5000/data",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "5000",
+			"path": ["data"]
+		  }
+		},
+		"response": []
+	  },
+	  {
+		"name": "DELETE data by ID (success)",
+		"request": {
+		  "method": "DELETE",
+		  "header": [],
+		  "url": {
+			"raw": "http://localhost:5000/data/1",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "5000",
+			"path": ["data", "1"]
+		  }
+		},
+		"response": []
+	  },
+	  {
+		"name": "DELETE data by ID (not found)",
+		"request": {
+		  "method": "DELETE",
+		  "header": [],
+		  "url": {
+			"raw": "http://localhost:5000/data/9999",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "5000",
+			"path": ["data", "9999"]
+		  }
+		},
+		"response": []
+	  }
+	]
+  }
+  

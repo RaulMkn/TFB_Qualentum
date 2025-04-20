@@ -6,21 +6,22 @@ El proyecto está organizado como una aplicación web en **Flask** con conexión
 
 ```
 TFB_Qualentum/
-├── app/                  # Código fuente de la aplicación Flask
-│   ├── __init__.py       # Inicializa la app y configura extensiones
-│   ├── models.py         # Definición de modelos con SQLAlchemy
-│   └── routes.py         # Endpoints RESTful y lógica de rutas
-├── tests/                # Pruebas unitarias y de integración
-│   ├── test_models.py    # Pruebas para los modelos
-│   └── test_routes.py    # Pruebas para las rutas
-├── Jenkinsfile           # Pipeline CI/CD para Jenkins
-├── job.xml               # Configuración del job de Jenkins
-├── dockerfile            # Define la imagen Docker de la aplicación
-├── manage.py             # Script de gestión para tareas administrativas
-├── pytest.ini            # Configuración de pytest
-├── requirements.txt      # Dependencias de Python
-├── run.py                # Punto de entrada principal de la aplicación
-└── README.md             # Documentación del proyecto
+├── app/                      # Código fuente de la aplicación Flask
+│   ├── __init__.py           # Inicializa la app y configura extensiones
+│   ├── models.py             # Definición de modelos con SQLAlchemy
+│   └── routes.py             # Endpoints RESTful y lógica de rutas
+├── tests/                    # Pruebas unitarias y de integración
+│   ├── test_models.py        # Pruebas para los modelos
+│   └── test_routes.py        # Pruebas para las rutas
+├── Jenkinsfile               # Pipeline CI/CD para Jenkins
+├── job.xml                   # Configuración del job de Jenkins
+├── dockerfile                # Define la imagen Docker de la aplicación
+├── manage.py                 # Script de gestión para tareas administrativas
+├── pytest.ini                # Configuración de pytest
+├── postman_colection.json    # Archivo json para importar a postman.
+├── requirements.txt          # Dependencias de Python
+├── run.py                    # Punto de entrada principal de la aplicación
+└── README.md                 # Documentación del proyecto
 ```
 
 - **Flask App**: En `app/__init__.py` se crea la instancia de Flask y se inicializa SQLAlchemy.
@@ -185,6 +186,20 @@ git checkout -b feature/nombre-breve develop
 
    - La aplicación estará disponible en `http://localhost:5000`.
    - Para detenerla: `docker stop tfb_app && docker rm tfb_app`.
+
+## Testeo de la API REST
+
+Se pueden probar los endpoints de la API REST meduante el uso de postman.
+Para ello:
+1. Abre Postman
+
+2. Haz clic en Import
+
+3. Añade el archivo postman_colection.json
+
+4. Haz clic en Continue > Import
+
+5. Ejecuta/Modifica los test en funcion de tus necesidades
 
 ## Ejecución de tests
 
